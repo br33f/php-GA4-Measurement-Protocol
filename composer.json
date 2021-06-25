@@ -1,0 +1,31 @@
+{
+  "name": "br33f/php-ga4-mp",
+  "description": "PHP GoogleAnalytics4 Measurement Protocol Library",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Damian Zamojski",
+      "email": "damian.zamojski1@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.1",
+    "guzzlehttp/guzzle": "^6.5.5",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Br33f\\Ga4\\MeasurementProtocol\\": "src/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5",
+    "fakerphp/faker": "^1.14"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  }
+}
