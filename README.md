@@ -13,9 +13,10 @@ https://developers.google.com/analytics/devguides/collection/protocol/ga4
 - ext-json
 - guzzlehttp/guzzle: ^6.5.5
 
-For testing:
+dev:
 - phpunit/phpunit: "^9.5"
 - fakerphp/faker: "^1.14"
+- php-coveralls/php-coveralls: "^2.4"
 
 ## Installation
 The recommended way to install this library is via [Composer](https://getcomposer.org/ "Composer") (packagist package: [br33f/php-ga4-mp](https://packagist.org/packages/br33f/php-ga4-mp "br33f/php-ga4-mp")).
@@ -33,4 +34,17 @@ or `package.json`
         "br33f/php-ga4-mp": "^0.1.0"
     }
 }
+```
+
+## Usage
+
+## Setup & Options
+
+## Unit Testing
+Unit Testing for this module is done using PHPUnit 9.
+
+Running unit tests:
+```
+composer install
+php vendor/bin/phpunit
 ```
