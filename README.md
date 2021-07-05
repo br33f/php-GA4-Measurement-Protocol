@@ -38,6 +38,44 @@ or `package.json`
 
 ## Usage
 
+Send View Item Event
+```php
+use Br33f\Ga4\MeasurementProtocol\Service;
+use Br33f\Ga4\MeasurementProtocol\Dto\Request\BaseRequest;
+use Br33f\Ga4\MeasurementProtocol\Dto\Event\PurchaseEvent;
+use Br33f\Ga4\MeasurementProtocol\Dto\Parameter\ItemParameter;
+
+// Create service instance
+$ga4Service = new Service('MEASUREMENT_PROTOCOL_API_SECRET', 'MEASUREMENT_ID");
+
+// Create base request with required client_id
+$baseRequest = new BaseRequest('CLIENT_ID');
+
+// Create Event Data
+$viewItemEventData = new ViewItemEvent();
+$viewItemEventData
+    ->setValue(51.10)
+    ->setCurrency('EUR');
+
+// Create Item
+$viewedItem = new ItemParameter();
+$viewedItem
+    ->setItemId('ITEM_ID')
+    ->setItemName('ITEM_NAME')
+    ->setPrice(25.55)
+    ->setQuantity(2);
+    
+// Add this item to viewItemEventData   
+$viewItemEventData->addItem($viewedItem)
+
+// Add event to base request (you can add up to 25 events to single request)
+$baseRequest->addEvent($viewItemEventData);
+
+// We have all the data we need. Just send the request.
+$ga4Service->send($baseRequest);
+
+```
+
 ## Setup & Options
 
 ## Unit Testing
