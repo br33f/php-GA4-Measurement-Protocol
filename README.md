@@ -3,7 +3,7 @@
 [![Latest Stable Version](https://poser.pugx.org/br33f/php-ga4-mp/v/stable.png)](https://packagist.org/packages/br33f/php-ga4-mp)
 [![Total Downloads](https://poser.pugx.org/br33f/php-ga4-mp/downloads.png)](https://packagist.org/packages/br33f/php-ga4-mp)
 ## Overview
-This is a PHP Library making it easier to utilize  Google Analytics 4 (GA4) Measurement Protocol. Measurement Protocol allows developers to send events directly from server-side PHP to Google Analytics. 
+This is a PHP Library facilitating the use of Google Analytics 4 (GA4) Measurement Protocol. Measurement Protocol allows developers to send events directly from server-side PHP to Google Analytics. 
 
 Please note that GA4 Measurement Protocol is in alpha and might encounter breaking changes. Full documentation is available here:
 https://developers.google.com/analytics/devguides/collection/protocol/ga4
