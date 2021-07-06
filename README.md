@@ -221,3 +221,6 @@ Running unit tests:
 composer install
 php vendor/bin/phpunit
 ```
+
+## License
+This library is released under the MIT License.
