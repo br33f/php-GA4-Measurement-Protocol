@@ -45,7 +45,7 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Event\ViewItemEvent;
 use Br33f\Ga4\MeasurementProtocol\Dto\Parameter\ItemParameter;
 
 // Create service instance
-$ga4Service = new Service('MEASUREMENT_PROTOCOL_API_SECRET', 'MEASUREMENT_ID");
+$ga4Service = new Service('MEASUREMENT_PROTOCOL_API_SECRET', 'MEASUREMENT_ID');
 
 // Create base request with required client_id
 $baseRequest = new BaseRequest('CLIENT_ID');
