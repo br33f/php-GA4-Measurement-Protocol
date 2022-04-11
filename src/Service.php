@@ -53,6 +53,12 @@ class Service
     protected $measurementId;
 
     /**
+     * The custom ip address of the visitor
+     * @var string
+     */
+    protected $ipOverride;
+
+    /**
      * Http Options
      * @var array
      */
@@ -111,7 +117,7 @@ class Service
     {
         $protocolScheme = $this->isUseSsl() ? self::SSL_SCHEME : self::NOT_SSL_SCHEME;
         $collectEndpoint = $isDebug ? $this->getCollectDebugEndpoint() : $this->getCollectEndpoint();
-        return $protocolScheme . $collectEndpoint . "?" . http_build_query(['measurement_id' => $this->getMeasurementId(), 'api_secret' => $this->getApiSecret()]);
+        return $protocolScheme . $collectEndpoint . "?" . http_build_query($this->getQueryParameters());
     }
 
     /**
@@ -163,6 +169,29 @@ class Service
     }
 
     /**
+     * Returns query parameters
+     * @return array
+     */
+    public function getQueryParameters(): array
+    {
+        $parameters = [
+            'measurement_id' => $this->getMeasurementId(),
+            'api_secret' => $this->getApiSecret(),
+        ];
+
+        $ip = $this->getIpOverride();
+        if (!empty($ip)) {
+            $parameters['uip'] = $ip;
+
+            // TODO Remove the following line when the GA4 API will support the IP override
+            // https://github.com/dataunlocker/save-analytics-from-content-blockers/issues/25#issuecomment-864392422
+            $parameters['_uip'] = $ip;
+        }
+
+        return $parameters;
+    }
+
+    /**
      * @return string
      */
     public function getMeasurementId(): string
@@ -192,6 +221,22 @@ class Service
     public function setApiSecret(string $apiSecret)
     {
         $this->apiSecret = $apiSecret;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIpOverride(): ?string
+    {
+        return $this->ipOverride;
+    }
+
+    /**
+     * @param string $ipOverride
+     */
+    public function setIpOverride(string $ipOverride)
+    {
+        $this->ipOverride = $ipOverride;
     }
 
     /**
