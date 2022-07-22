@@ -15,12 +15,19 @@ class Service
 {
     const SSL_SCHEME = 'https://';
     const NOT_SSL_SCHEME = 'http://';
+    const PREPENDED_WWW = 'www';
 
     /**
      * Indicates if connection to endpoint should be made with HTTPS (true) or HTTP (false)
      * @var bool
      */
     protected $useSsl = true;
+
+    /**
+     * Indicates if connection to endpoint should be made with prepended WWW
+     * @var bool
+     */
+    protected $useWww = false;
 
     /**
      * Collect Endpoint
@@ -117,7 +124,8 @@ class Service
     {
         $protocolScheme = $this->isUseSsl() ? self::SSL_SCHEME : self::NOT_SSL_SCHEME;
         $collectEndpoint = $isDebug ? $this->getCollectDebugEndpoint() : $this->getCollectEndpoint();
-        return $protocolScheme . $collectEndpoint . "?" . http_build_query($this->getQueryParameters());
+        $prependedWww = $this->isUseWww() ? (self::PREPENDED_WWW . '.') : '';
+        return $protocolScheme . $prependedWww . $collectEndpoint . "?" . http_build_query($this->getQueryParameters());
     }
 
     /**
@@ -134,6 +142,22 @@ class Service
     public function setUseSsl(bool $useSsl)
     {
         $this->useSsl = $useSsl;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseWww(): bool
+    {
+        return $this->useWww;
+    }
+
+    /**
+     * @param bool $useWww
+     */
+    public function setUseWww(bool $useWww)
+    {
+        $this->useWww = $useWww;
     }
 
     /**
