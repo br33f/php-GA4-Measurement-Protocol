@@ -11,7 +11,7 @@ https://developers.google.com/analytics/devguides/collection/protocol/ga4
 ## Requirements
 - PHP >= 7.1
 - ext-json
-- guzzlehttp/guzzle: ^6.5.5
+- guzzlehttp/guzzle: ^6.5.5 || ^7.0.0
 
 dev:
 - phpunit/phpunit: "^9.5"
