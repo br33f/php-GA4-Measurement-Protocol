@@ -45,6 +45,15 @@ class ServiceTest extends BaseTestCase
         $this->assertFalse($this->service->isUseSsl());
     }
 
+    public function testUsewww()
+    {
+        $this->service->setUseWww(true);
+        $this->assertTrue($this->service->isUseWww());
+
+        $this->service->setUseWww(false);
+        $this->assertFalse($this->service->isUseWww());
+    }
+
     public function testCollectEndpoint()
     {
         $setCollectEndpoint = str_replace('https://', '', $this->faker->url);
@@ -116,7 +125,6 @@ class ServiceTest extends BaseTestCase
         $newService->setUseSsl(false);
         $this->assertEquals(Service::NOT_SSL_SCHEME . $setCollectEndpoint . $getParams, $newService->getEndpoint());
 
-
         $setCollectDebugEndpoint = str_replace('https://', '', $this->faker->url);
         $setCollectDebugEndpoint = str_replace('http://', '', $setCollectDebugEndpoint);
         $newService->setCollectDebugEndpoint($setCollectDebugEndpoint);
@@ -163,6 +171,33 @@ class ServiceTest extends BaseTestCase
         $this->assertTrue($baseResponse instanceof AbstractResponse);
         $this->assertEquals(200, $baseResponse->getStatusCode());
     }
+
+    public function testSendWithIpOverride()
+    {
+        $mock = new MockHandler([
+            new Response(200)
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $mockClient = new Client(['handler' => $handlerStack]);
+
+        $setApiSecret = $this->faker->word;
+        $setMeasurementId = $this->faker->bothify('**-########');
+        $sendService = new Service($setApiSecret, $setMeasurementId);
+        $sendService->getHttpClient()->setClient($mockClient);
+
+        $sendService->setIpOverride($this->faker->ipv4);
+
+        $setClientId = $this->faker->asciify('********************.********************');
+        $sentRequest = new BaseRequest($setClientId);
+        $event = new BaseEvent($this->faker->word);
+        $sentRequest->addEvent($event);
+
+        $baseResponse = $sendService->send($sentRequest);
+        $this->assertTrue($baseResponse instanceof AbstractResponse);
+        $this->assertEquals(200, $baseResponse->getStatusCode());
+    }
+
 
     public function testSendDebugWithError()
     {
