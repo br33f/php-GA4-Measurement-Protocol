@@ -111,7 +111,7 @@ class BaseEventTest extends BaseTestCase
     {
         $emptyEvent = new BaseEvent();
 
-        $this->assertEquals(['name' => null, 'params' => []], $emptyEvent->export());
+        $this->assertEquals(['name' => null, 'params' => new \ArrayObject()], $emptyEvent->export());
     }
 
     public function testExport()
@@ -128,7 +128,7 @@ class BaseEventTest extends BaseTestCase
         }
         $constructedEvent = new BaseEvent($setupName, $baseParams);
 
-        $this->assertEquals(['name' => $setupName, 'params' => $baseParamsExport], $constructedEvent->export());
+        $this->assertEquals(['name' => $setupName, 'params' => new \ArrayObject($baseParamsExport)], $constructedEvent->export());
     }
 
     public function testSetGetCall()

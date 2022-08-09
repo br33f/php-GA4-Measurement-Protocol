@@ -169,7 +169,11 @@ abstract class AbstractEvent implements ExportableInterface, ValidateInterface
 
         return [
             'name' => $this->getName(),
-            'params' => $preparedParams
+
+            // Note that we need to return an \ArrayObject here. As otherwise json_encode will serialize params to `[]`. And
+            // Google Analytics will error on this, as it expects a map. Whereas new \ArrayObject will export correctly to `{}`.
+            // See https://github.com/br33f/php-GA4-Measurement-Protocol/issues/10.            
+            'params' => new \ArrayObject($preparedParams),
         ];
     }
 
