@@ -65,7 +65,7 @@ $viewedItem
     ->setQuantity(2);
     
 // Add this item to viewItemEventData   
-$viewItemEventData->addItem($viewedItem)
+$viewItemEventData->addItem($viewedItem);
 
 // Add event to base request (you can add up to 25 events to single request)
 $baseRequest->addEvent($viewItemEventData);
@@ -103,7 +103,7 @@ $purchasedItem1
     ->setQuantity(2);
     
 // Add this item to purchaseEventData
-$purchaseEventData->addItem($purchasedItem1)
+$purchaseEventData->addItem($purchasedItem1);
 
 // You can also fill item data via constructor
 $purchaseEventData->addItem(new ItemParameter([
