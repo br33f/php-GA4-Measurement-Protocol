@@ -40,10 +40,7 @@ class UserProperties implements ExportableInterface
     public function export(): array
     {
         return array_reduce($this->getUserPropertiesList(), function ($last, UserProperty $userProperty) {
-            $last[$userProperty->getName()] = [
-                'value' => $userProperty->getValue(),
-            ];
-            return $last;
+            return array_merge($last, $userProperty->export());
         }, []);
     }
 
