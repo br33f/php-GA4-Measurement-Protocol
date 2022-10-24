@@ -71,17 +71,17 @@ class UserPropertiesTest extends BaseTestCase
         $this->userProperties->setUserPropertiesList($setUserProperties);
 
         $this->assertEquals([
-            [$setUserProperties[0]->getName() => [
+            $setUserProperties[0]->getName() => [
                 'value' => $setUserProperties[0]->getValue()
-            ]],
-            [$setUserProperties[1]->getName() => [
+            ],
+            $setUserProperties[1]->getName() => [
                 'value' => $setUserProperties[1]->getValue()
-            ]],
-            [$setUserProperties[2]->getName() => [
+            ],
+            $setUserProperties[2]->getName() => [
                 'value' => $setUserProperties[2]->getValue()
-            ]]
+            ],
         ], $this->userProperties->export());
-    }
+}
 
     protected function setUp(): void
     {
