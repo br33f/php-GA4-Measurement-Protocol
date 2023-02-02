@@ -21,7 +21,13 @@ class BaseRequest extends AbstractRequest
      * Required
      * @var string
      */
-    protected $clientId;
+    protected $clientId = null;
+
+    /**
+     * App Instance ID.
+     * @var string
+     */
+    protected $appInstanceId = null;
 
     /**
      * Unique identifier for a user.
@@ -66,7 +72,10 @@ class BaseRequest extends AbstractRequest
      */
     public function __construct(?string $clientId = null, $events = null)
     {
-        $this->clientId = $clientId ?? '';
+        if ($clientId !== null) {
+            @trigger_error('Creating a request by passing a web client ID to the constructor is deprecated in v0.1.3 and removed in v0.2.0. Use ::setClientId() or ::setAppInstanceId() directly, instead.', E_USER_DEPRECATED);
+            $this->clientId = $clientId;
+        }
         if ($events !== null) {
             if ($events instanceof EventCollection) {
                 $this->events = $events;
@@ -144,11 +153,12 @@ class BaseRequest extends AbstractRequest
      */
     public function export(): array
     {
-        $exportBaseRequest = [
+        $exportBaseRequest = array_filter([
             'client_id' => $this->getClientId(),
+            'app_instance_id' => $this->getAppInstanceId(),
             'non_personalized_ads' => $this->isNonPersonalizedAds(),
-            'events' => $this->getEvents()->export()
-        ];
+            'events' => $this->getEvents()->export(),
+        ]);
 
         if ($this->getUserId() !== null) {
             $exportBaseRequest['user_id'] = $this->getUserId();
@@ -177,9 +187,27 @@ class BaseRequest extends AbstractRequest
      * @param string $clientId
      * @return BaseRequest
      */
-    public function setClientId(string $clientId)
+    public function setClientId(string $clientId): self
     {
         $this->clientId = $clientId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppInstanceId(): string
+    {
+        return $this->appInstanceId;
+    }
+
+    /**
+     * @param string $appInstanceId
+     * @return BaseRequest
+     */
+    public function setAppInstanceId(string $appInstanceId): self
+    {
+        $this->appInstanceId = $appInstanceId;
         return $this;
     }
 
@@ -238,13 +266,20 @@ class BaseRequest extends AbstractRequest
     }
 
     /**
+     * @param string $context Context for request, either 'web' or 'firebase'.
      * @return bool
      * @throws ValidationException
      */
-    public function validate()
+    public function validate(string $context = 'web')
     {
-        if (empty($this->getClientId())) {
+        if ($context === 'web' && empty($this->getClientId())) {
             throw new ValidationException('Parameter "client_id" is required.', ErrorCode::VALIDATION_CLIENT_ID_REQUIRED, 'client_id');
+        }
+        if ($context === 'firebase' && empty($this->getAppInstanceId())) {
+            throw new ValidationException('Parameter "app_instance_id" is required.', ErrorCode::VALIDATION_APP_INSTANCE_ID_REQUIRED, 'app_instance_id');
+        }
+        if ($this->getClientId() && $this->getClientId()) {
+            throw new ValidationException('Cannot specify both "client_id" and "app_instance_id".', ErrorCode::VALIDATION_CLIENT_IDENTIFIER_MISCONFIGURED);
         }
 
         $this->getEvents()->validate();
