@@ -11,6 +11,7 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Request\AbstractRequest;
 use Br33f\Ga4\MeasurementProtocol\Dto\Response\BaseResponse;
 use Br33f\Ga4\MeasurementProtocol\Dto\Response\DebugResponse;
 use Br33f\Ga4\MeasurementProtocol\Exception\MisconfigurationException;
+use Solarium\Component\Debug;
 
 class Service
 {
@@ -94,18 +95,33 @@ class Service
 
     /**
      * @param AbstractRequest $request
+     * @param bool $debug
      * @return BaseResponse
      * @throws Exception\ValidationException
      * @throws Exception\HydrationException
      */
-    public function send(AbstractRequest $request)
+    public function send(AbstractRequest $request, bool $debug = false)
     {
         $request->validate($this->measurementId ? 'web' : 'firebase');
-        $response = $this->getHttpClient()->post($this->getEndpoint(), $request->export(), $this->getOptions());
+        $response = $this->getHttpClient()->post($this->getEndpoint($debug), $request->export(), $this->getOptions());
 
-        return new BaseResponse($response);
+        return !$debug
+            ? new BaseResponse($response)
+            : new DebugResponse($response);
     }
-
+    
+    /**
+     * @param AbstractRequest $request
+     * @return BaseResponse
+     * @throws Exception\ValidationException
+     * @throws Exception\HydrationException
+     * @deprecated Use ::send() with $debug = true, instead.
+     */
+    public function sendDebug(AbstractRequest $request)
+    {
+        @trigger_error('Service::sendDebug() is deprecated in v0.1.3 and removed in v0.2.0. Use ::send() with the $debug flag set, instead.', E_USER_DEPRECATED);
+        return $this->send($request, true);
+    }
     /**
      * Returns Http Client if set or creates a new instance and returns it
      * @return HttpClient
@@ -236,7 +252,7 @@ class Service
     /**
      * @return string
      */
-    public function getMeasurementId(): string
+    public function getMeasurementId(): ?string
     {
         return $this->measurementId;
     }
@@ -316,18 +332,5 @@ class Service
     {
         $this->options = $options;
     }
-
-    /**
-     * @param AbstractRequest $request
-     * @return BaseResponse
-     * @throws Exception\ValidationException
-     * @throws Exception\HydrationException
-     */
-    public function sendDebug(AbstractRequest $request)
-    {
-        $request->validate();
-        $response = $this->getHttpClient()->post($this->getEndpoint(true), $request->export(), $this->getOptions());
-
-        return new DebugResponse($response);
-    }
+    
 }

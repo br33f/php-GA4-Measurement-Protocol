@@ -178,7 +178,7 @@ class BaseRequest extends AbstractRequest
     /**
      * @return string
      */
-    public function getClientId(): string
+    public function getClientId(): ?string
     {
         return $this->clientId;
     }
