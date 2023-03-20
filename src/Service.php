@@ -11,7 +11,6 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Request\AbstractRequest;
 use Br33f\Ga4\MeasurementProtocol\Dto\Response\BaseResponse;
 use Br33f\Ga4\MeasurementProtocol\Dto\Response\DebugResponse;
 use Br33f\Ga4\MeasurementProtocol\Exception\MisconfigurationException;
-use Solarium\Component\Debug;
 
 class Service
 {
@@ -95,12 +94,12 @@ class Service
 
     /**
      * @param AbstractRequest $request
-     * @param bool $debug
+     * @param bool|null $debug
      * @return BaseResponse
      * @throws Exception\ValidationException
      * @throws Exception\HydrationException
      */
-    public function send(AbstractRequest $request, bool $debug = false)
+    public function send(AbstractRequest $request, ?bool $debug = false)
     {
         $request->validate($this->measurementId ? 'web' : 'firebase');
         $response = $this->getHttpClient()->post($this->getEndpoint($debug), $request->export(), $this->getOptions());
@@ -115,11 +114,9 @@ class Service
      * @return BaseResponse
      * @throws Exception\ValidationException
      * @throws Exception\HydrationException
-     * @deprecated Use ::send() with $debug = true, instead.
      */
     public function sendDebug(AbstractRequest $request)
     {
-        @trigger_error('Service::sendDebug() is deprecated in v0.1.3 and removed in v0.2.0. Use ::send() with the $debug flag set, instead.', E_USER_DEPRECATED);
         return $this->send($request, true);
     }
     /**
@@ -221,6 +218,7 @@ class Service
     /**
      * Returns query parameters
      * @return array
+     * @throws MisconfigurationException
      */
     public function getQueryParameters(): array
     {
@@ -232,9 +230,6 @@ class Service
         
         if ($parameters['firebase_app_id'] && $parameters['measurement_id']) {
             throw new MisconfigurationException("Cannot specify both 'measurement_id' and 'firebase_app_id'.");
-        }
-        if (!$parameters['api_secret']) {
-            throw new MisconfigurationException('API Secret must not be empty.');
         }
 
         $ip = $this->getIpOverride();
@@ -268,9 +263,9 @@ class Service
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getFirebaseId(): string
+    public function getFirebaseId(): ?string
     {
         return $this->firebaseId;
     }

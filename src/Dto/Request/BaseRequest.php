@@ -194,9 +194,9 @@ class BaseRequest extends AbstractRequest
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAppInstanceId(): string
+    public function getAppInstanceId(): ?string
     {
         return $this->appInstanceId;
     }
@@ -266,11 +266,11 @@ class BaseRequest extends AbstractRequest
     }
 
     /**
-     * @param string $context Context for request, either 'web' or 'firebase'.
+     * @param string|null $context Context for request, either 'web' or 'firebase'.
      * @return bool
      * @throws ValidationException
      */
-    public function validate(string $context = 'web')
+    public function validate(?string $context = 'web')
     {
         if ($context === 'web' && empty($this->getClientId())) {
             throw new ValidationException('Parameter "client_id" is required.', ErrorCode::VALIDATION_CLIENT_ID_REQUIRED, 'client_id');
@@ -278,7 +278,7 @@ class BaseRequest extends AbstractRequest
         if ($context === 'firebase' && empty($this->getAppInstanceId())) {
             throw new ValidationException('Parameter "app_instance_id" is required.', ErrorCode::VALIDATION_APP_INSTANCE_ID_REQUIRED, 'app_instance_id');
         }
-        if ($this->getClientId() && $this->getClientId()) {
+        if ($this->getClientId() && $this->getAppInstanceId()) {
             throw new ValidationException('Cannot specify both "client_id" and "app_instance_id".', ErrorCode::VALIDATION_CLIENT_IDENTIFIER_MISCONFIGURED);
         }
 
