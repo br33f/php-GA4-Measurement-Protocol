@@ -45,10 +45,12 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Event\ViewItemEvent;
 use Br33f\Ga4\MeasurementProtocol\Dto\Parameter\ItemParameter;
 
 // Create service instance
-$ga4Service = new Service('MEASUREMENT_PROTOCOL_API_SECRET', 'MEASUREMENT_ID');
+$ga4Service = new Service('MEASUREMENT_PROTOCOL_API_SECRET');
+$ga4Service->setMeasurementId('MEASUREMENT_ID');
 
-// Create base request with required client_id
-$baseRequest = new BaseRequest('CLIENT_ID');
+// Create base request
+$baseRequest = new BaseRequest();
+$baseRequest->setClientId('CLIENT_ID');
 
 // Create Event Data
 $viewItemEventData = new ViewItemEvent();
@@ -83,10 +85,12 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Event\PurchaseEvent;
 use Br33f\Ga4\MeasurementProtocol\Dto\Parameter\ItemParameter;
 
 // Create service instance
-$ga4Service = new Service('MEASUREMENT_PROTOCOL_API_SECRET', 'MEASUREMENT_ID');
+$ga4Service = new Service('MEASUREMENT_PROTOCOL_API_SECRET');
+$ga4Service->setMeasurementId('MEASUREMENT_ID');
 
-// Create base request with required client_id
-$baseRequest = new BaseRequest('CLIENT_ID');
+// Create base request
+$baseRequest = new BaseRequest();
+$baseRequest->setClientId('CLIENT_ID');
 
 // Create Event Data
 $purchaseEventData = new PurchaseEvent();
@@ -155,7 +159,7 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Event\BaseEvent;
 // Create Base Event Data (for example: 'share' event - https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#share)
 $eventName = 'share'; 
 $anyEventData = new BaseEvent($eventName);
-$purchaseEventData
+$anyEventData
     ->setMethod('Twitter')
     ->setContentType('Post')
     ->setItemId('example_item_id')
@@ -166,6 +170,23 @@ $purchaseEventData
 // ...
 
 ```
+
+### Firebase Support
+It is possible to use this library to send Firebase events. To do so, just initialize Service and BaseRequest as in following example:
+
+```php
+use Br33f\Ga4\MeasurementProtocol\Service;
+use Br33f\Ga4\MeasurementProtocol\Dto\Request\BaseRequest;
+
+// Create service instance
+$ga4Service = new Service('MEASUREMENT_PROTOCOL_API_SECRET');
+$ga4Service->setFirebaseId('FIREBASE_APP_ID'); // instead of setMeasurementId(...)
+
+// Create base request
+$baseRequest = new BaseRequest();
+$baseRequest->setAppInstanceId('APP_INSTANCE_ID'); // instead of setClientId(...)
+```
+
 
 ## Debug event data and requests
 Debuging event data is possible by sending them to debug endpoint (Measurement Protocol Validation Server), since default endpoint for Google Analytics 4 Measurement Protocol does not return any HTTP error codes or messages. In order to validate event one should use `sendDebug($request)` method instead of `send($request)`.
@@ -180,10 +201,12 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Event\AddToCartEvent;
 use Br33f\Ga4\MeasurementProtocol\Dto\Parameter\ItemParameter;
 
 // Create service instance
-$ga4Service = new Service('MEASUREMENT_PROTOCOL_API_SECRET', 'MEASUREMENT_ID');
+$ga4Service = new Service('MEASUREMENT_PROTOCOL_API_SECRET');
+$ga4Service->setMeasurementId('MEASUREMENT_ID');
 
-// Create base request with required client_id
-$baseRequest = new BaseRequest('CLIENT_ID');
+// Create base request
+$baseRequest = new BaseRequest();
+$baseRequest->setClientId('CLIENT_ID');
 
 // Create Invalid Event Data
 $addToCartEventData = new AddToCartEvent();
