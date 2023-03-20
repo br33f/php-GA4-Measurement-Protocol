@@ -10,7 +10,7 @@ namespace Br33f\Ga4\MeasurementProtocol\Exception;
 
 use Exception;
 
-class HydrationException extends Exception
+class HydrationException extends AnalyticsException
 {
 
 }

@@ -10,6 +10,7 @@ namespace Br33f\Ga4\MeasurementProtocol;
 use Br33f\Ga4\MeasurementProtocol\Dto\Request\AbstractRequest;
 use Br33f\Ga4\MeasurementProtocol\Dto\Response\BaseResponse;
 use Br33f\Ga4\MeasurementProtocol\Dto\Response\DebugResponse;
+use Br33f\Ga4\MeasurementProtocol\Exception\MisconfigurationException;
 
 class Service
 {
@@ -51,14 +52,20 @@ class Service
      * An API SECRET generated in the Google Analytics UI
      * @var string
      */
-    protected $apiSecret;
+    protected $apiSecret = null;
 
     /**
      * The measurement ID associated with a data stream
      * @var string
      */
-    protected $measurementId;
+    protected $measurementId = null;
 
+    /**
+     * The Firebase App ID associated with a data stream
+     * @var string
+     */
+    protected $firebaseId = null;
+    
     /**
      * The custom ip address of the visitor
      * @var string
@@ -74,28 +81,44 @@ class Service
     /**
      * Client constructor.
      * @param string $apiSecret
-     * @param string $measurementId
+     * @param string|null $measurementId
      */
-    public function __construct(string $apiSecret, string $measurementId)
+    public function __construct(string $apiSecret, ?string $measurementId = null)
     {
         $this->setApiSecret($apiSecret);
-        $this->setMeasurementId($measurementId);
+        if ($measurementId) {
+          @trigger_error('Creating a measurement service instance with a measurement ID passed to the constructor is deprecated in v0.1.3 and removed in v0.2.0. Use ::setMeasurementId() or ::setFirebaseId() directly, instead.', E_USER_DEPRECATED);
+          $this->setMeasurementId($measurementId);
+        }
     }
 
+    /**
+     * @param AbstractRequest $request
+     * @param bool|null $debug
+     * @return BaseResponse
+     * @throws Exception\ValidationException
+     * @throws Exception\HydrationException
+     */
+    public function send(AbstractRequest $request, ?bool $debug = false)
+    {
+        $request->validate($this->measurementId ? 'web' : 'firebase');
+        $response = $this->getHttpClient()->post($this->getEndpoint($debug), $request->export(), $this->getOptions());
+
+        return !$debug
+            ? new BaseResponse($response)
+            : new DebugResponse($response);
+    }
+    
     /**
      * @param AbstractRequest $request
      * @return BaseResponse
      * @throws Exception\ValidationException
      * @throws Exception\HydrationException
      */
-    public function send(AbstractRequest $request)
+    public function sendDebug(AbstractRequest $request)
     {
-        $request->validate();
-        $response = $this->getHttpClient()->post($this->getEndpoint(), $request->export(), $this->getOptions());
-
-        return new BaseResponse($response);
+        return $this->send($request, true);
     }
-
     /**
      * Returns Http Client if set or creates a new instance and returns it
      * @return HttpClient
@@ -195,13 +218,19 @@ class Service
     /**
      * Returns query parameters
      * @return array
+     * @throws MisconfigurationException
      */
     public function getQueryParameters(): array
     {
         $parameters = [
-            'measurement_id' => $this->getMeasurementId(),
             'api_secret' => $this->getApiSecret(),
+            'measurement_id' => $this->getMeasurementId(),
+            'firebase_app_id' => $this->getFirebaseId(),
         ];
+        
+        if ($parameters['firebase_app_id'] && $parameters['measurement_id']) {
+            throw new MisconfigurationException("Cannot specify both 'measurement_id' and 'firebase_app_id'.");
+        }
 
         $ip = $this->getIpOverride();
         if (!empty($ip)) {
@@ -212,23 +241,43 @@ class Service
             $parameters['_uip'] = $ip;
         }
 
-        return $parameters;
+        return array_filter($parameters);
     }
 
     /**
      * @return string
      */
-    public function getMeasurementId(): string
+    public function getMeasurementId(): ?string
     {
         return $this->measurementId;
     }
 
     /**
      * @param string $measurementId
+     * @return self
      */
-    public function setMeasurementId(string $measurementId)
+    public function setMeasurementId(string $measurementId): self
     {
         $this->measurementId = $measurementId;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFirebaseId(): ?string
+    {
+        return $this->firebaseId;
+    }
+
+    /**
+     * @param string $firebaseId
+     * @return self
+     */
+    public function setFirebaseId(string $firebaseId): self
+    {
+        $this->firebaseId = $firebaseId;
+        return $this;
     }
 
     /**
@@ -278,18 +327,5 @@ class Service
     {
         $this->options = $options;
     }
-
-    /**
-     * @param AbstractRequest $request
-     * @return BaseResponse
-     * @throws Exception\ValidationException
-     * @throws Exception\HydrationException
-     */
-    public function sendDebug(AbstractRequest $request)
-    {
-        $request->validate();
-        $response = $this->getHttpClient()->post($this->getEndpoint(true), $request->export(), $this->getOptions());
-
-        return new DebugResponse($response);
-    }
+    
 }

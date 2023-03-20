@@ -114,11 +114,32 @@ class BaseRequestTest extends BaseTestCase
         $this->assertEquals($event, $this->baseRequest->getEvents()->getEventList()[0]);
     }
 
-    public function testValidateFailed()
+    public function testValidateClientIdRequiredFailed()
     {
         $newBaseRequest = new BaseRequest();
 
         $this->expectExceptionCode(ErrorCode::VALIDATION_CLIENT_ID_REQUIRED);
+        $newBaseRequest->validate('web');
+    }
+
+    public function testValidateAppInstanceIdRequiredFailed()
+    {
+        $newBaseRequest = new BaseRequest();
+
+        $this->expectExceptionCode(ErrorCode::VALIDATION_APP_INSTANCE_ID_REQUIRED);
+        $newBaseRequest->validate('firebase');
+    }
+
+    public function testValidateBothClientIdAppInstanceIdRequiredFailed()
+    {
+        $newBaseRequest = new BaseRequest();
+        $setAppInstanceId = $this->faker->bothify('**-########');
+        $setFirebaseId = $this->faker->bothify('**-########');
+
+        $newBaseRequest->setAppInstanceId($setAppInstanceId);
+        $newBaseRequest->setClientId($setFirebaseId);
+
+        $this->expectExceptionCode(ErrorCode::VALIDATION_CLIENT_IDENTIFIER_MISCONFIGURED);
         $newBaseRequest->validate();
     }
 
@@ -147,7 +168,6 @@ class BaseRequestTest extends BaseTestCase
         $this->assertEquals([
             'client_id' => $setClientId,
             'events' => $setEventCollection->export(),
-            'non_personalized_ads' => false
         ], $exportBaseRequest->export());
     }
 
@@ -173,7 +193,6 @@ class BaseRequestTest extends BaseTestCase
         $this->assertEquals([
             'client_id' => $setClientId,
             'events' => $setEventCollection->export(),
-            'non_personalized_ads' => false,
             'user_id' => $setUserId,
             'timestamp_micros' => $setTimestampMicros,
             'user_properties' => $setUserProperties->export()

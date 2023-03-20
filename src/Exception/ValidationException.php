@@ -10,7 +10,7 @@ namespace Br33f\Ga4\MeasurementProtocol\Exception;
 use Exception;
 use Throwable;
 
-class ValidationException extends Exception
+class ValidationException extends AnalyticsException
 {
     /**
      * @var string|null

@@ -11,6 +11,7 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Event\BaseEvent;
 use Br33f\Ga4\MeasurementProtocol\Dto\Request\BaseRequest;
 use Br33f\Ga4\MeasurementProtocol\Dto\Response\AbstractResponse;
 use Br33f\Ga4\MeasurementProtocol\Dto\Response\DebugResponse;
+use Br33f\Ga4\MeasurementProtocol\Exception\MisconfigurationException;
 use Br33f\Ga4\MeasurementProtocol\HttpClient;
 use Br33f\Ga4\MeasurementProtocol\Service;
 use GuzzleHttp\Client;
@@ -119,7 +120,7 @@ class ServiceTest extends BaseTestCase
         $newService->setCollectEndpoint($setCollectEndpoint);
         $newService->setUseSsl(true);
 
-        $getParams = '?' . http_build_query(['measurement_id' => $newService->getMeasurementId(), 'api_secret' => $newService->getApiSecret()]);
+        $getParams = '?' . http_build_query(['api_secret' => $newService->getApiSecret(), 'measurement_id' => $newService->getMeasurementId()]);
         $this->assertEquals(Service::SSL_SCHEME . $setCollectEndpoint . $getParams, $newService->getEndpoint());
 
         $newService->setUseSsl(false);
@@ -231,10 +232,33 @@ class ServiceTest extends BaseTestCase
         $this->assertEquals(1, count($debugResponse->getValidationMessages()));
     }
 
+    public function testMisconfigBothInGetQueryParameters()
+    {
+        $setApiSecret = $this->faker->word;
+        $setMeasurementId = $this->faker->bothify('**-########');
+        $setFirebaseId = $this->faker->bothify('**-########');
+        $testService = new Service($setApiSecret, $setMeasurementId);
+        $testService->setFirebaseId($setFirebaseId);
+
+        $this->expectException(MisconfigurationException::class);
+        $testService->getQueryParameters();
+    }
+
+    public function testMisconfigApiSecretEmptyInGetQueryParameters()
+    {
+        $setApiSecret = $this->faker->word;
+        $setMeasurementId = $this->faker->bothify('**-########');
+        $setFirebaseId = $this->faker->bothify('**-########');
+        $testService = new Service($setApiSecret, $setMeasurementId);
+        $testService->setFirebaseId($setFirebaseId);
+
+        $this->expectException(MisconfigurationException::class);
+        $testService->getQueryParameters();
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->service = new Service($this->faker->word, $this->faker->bothify('**-########'));
     }
-
 }
