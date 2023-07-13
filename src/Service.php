@@ -65,7 +65,7 @@ class Service
      * @var string
      */
     protected $firebaseId = null;
-    
+
     /**
      * The custom ip address of the visitor
      * @var string
@@ -95,11 +95,11 @@ class Service
     /**
      * @param AbstractRequest $request
      * @param bool|null $debug
-     * @return BaseResponse
+     * @return BaseResponse|DebugResponse
      * @throws Exception\ValidationException
      * @throws Exception\HydrationException
      */
-    public function send(AbstractRequest $request, ?bool $debug = false)
+    public function send(AbstractRequest $request, ?bool $debug = false): BaseResponse|DebugResponse
     {
         $request->validate($this->measurementId ? 'web' : 'firebase');
         $response = $this->getHttpClient()->post($this->getEndpoint($debug), $request->export(), $this->getOptions());
@@ -108,17 +108,18 @@ class Service
             ? new BaseResponse($response)
             : new DebugResponse($response);
     }
-    
+
     /**
      * @param AbstractRequest $request
-     * @return BaseResponse
+     * @return DebugResponse
      * @throws Exception\ValidationException
      * @throws Exception\HydrationException
      */
-    public function sendDebug(AbstractRequest $request)
+    public function sendDebug(AbstractRequest $request): DebugResponse
     {
         return $this->send($request, true);
     }
+
     /**
      * Returns Http Client if set or creates a new instance and returns it
      * @return HttpClient
@@ -227,7 +228,7 @@ class Service
             'measurement_id' => $this->getMeasurementId(),
             'firebase_app_id' => $this->getFirebaseId(),
         ];
-        
+
         if ($parameters['firebase_app_id'] && $parameters['measurement_id']) {
             throw new MisconfigurationException("Cannot specify both 'measurement_id' and 'firebase_app_id'.");
         }
@@ -327,5 +328,5 @@ class Service
     {
         $this->options = $options;
     }
-    
+
 }
