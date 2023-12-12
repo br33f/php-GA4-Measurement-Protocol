@@ -131,6 +131,7 @@ At the moment, the library contains the defined structures of the following even
 | add_payment_info | AddPaymentInfoEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#add_payment_info)
 | add_shipping_info | AddShippingInfoEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#add_shipping_info)
 | add_to_cart | AddToCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#add_to_cart)
+| add_to_wishlist | AddToWishlistEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?hl=fr&client_type=gtag#add_to_wishlist)
 | begin_checkout | BeginCheckoutEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#begin_checkout)
 | login | LoginEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#login)
 | purchase | PurchaseEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#purchase)
