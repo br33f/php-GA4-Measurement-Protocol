@@ -133,10 +133,12 @@ class Service
 
     /**
      * @param HttpClient $httpClient
+     * @return self
      */
-    public function setHttpClient(HttpClient $httpClient)
+    public function setHttpClient(HttpClient $httpClient): self
     {
         $this->httpClient = $httpClient;
+        return $this;
     }
 
     /**
@@ -161,10 +163,12 @@ class Service
 
     /**
      * @param bool $useSsl
+     * @return self
      */
-    public function setUseSsl(bool $useSsl)
+    public function setUseSsl(bool $useSsl): self
     {
         $this->useSsl = $useSsl;
+        return $this;
     }
 
     /**
@@ -177,10 +181,12 @@ class Service
 
     /**
      * @param bool $useWww
+     * @return self
      */
-    public function setUseWww(bool $useWww)
+    public function setUseWww(bool $useWww): self
     {
         $this->useWww = $useWww;
+        return $this;
     }
 
     /**
@@ -193,10 +199,12 @@ class Service
 
     /**
      * @param string $collectDebugEndpoint
+     * @return self
      */
-    public function setCollectDebugEndpoint(string $collectDebugEndpoint)
+    public function setCollectDebugEndpoint(string $collectDebugEndpoint): self
     {
         $this->collectDebugEndpoint = $collectDebugEndpoint;
+        return $this;
     }
 
     /**
@@ -209,10 +217,12 @@ class Service
 
     /**
      * @param string $collectEndpoint
+     * @return self
      */
-    public function setCollectEndpoint(string $collectEndpoint)
+    public function setCollectEndpoint(string $collectEndpoint): self
     {
         $this->collectEndpoint = $collectEndpoint;
+        return $this;
     }
 
     /**
@@ -290,10 +300,12 @@ class Service
 
     /**
      * @param string $apiSecret
+     * @return self
      */
-    public function setApiSecret(string $apiSecret)
+    public function setApiSecret(string $apiSecret): self
     {
         $this->apiSecret = $apiSecret;
+        return $this;
     }
 
     /**
@@ -306,10 +318,12 @@ class Service
 
     /**
      * @param string $ipOverride
+     * @return self
      */
-    public function setIpOverride(string $ipOverride)
+    public function setIpOverride(string $ipOverride): self
     {
         $this->ipOverride = $ipOverride;
+        return $this;
     }
 
     /**
@@ -322,10 +336,12 @@ class Service
 
     /**
      * @param array|null $options
+     * @return self
      */
-    public function setOptions(?array $options)
+    public function setOptions(?array $options): self
     {
         $this->options = $options;
+        return $this;
     }
     
 }
