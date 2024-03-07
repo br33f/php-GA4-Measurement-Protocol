@@ -72,6 +72,6 @@ class BaseResponse extends AbstractResponse
     public function hydrate($blueprint)
     {
         $this->setStatusCode($blueprint->getStatusCode());
-        $this->setBody($blueprint->getBody()->getContents());
+        $this->setBody($blueprint->getBody());
     }
 }
