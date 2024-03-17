@@ -12,31 +12,23 @@ use Br33f\Ga4\MeasurementProtocol\Dto\ExportableInterface;
 class UserAddress implements ExportableInterface
 {
     /**
-     * @var UserAddress[]|null
+     * @var UserDataItem[]|null
      */
     protected $userAddressItemList;
 
     /**
      * UserAddress constructor.
-     *
-     * @param UserAddress[]  $userAddressList
      */
-    public function __construct(array $userAddressItemList = null)
+    public function __construct(?array $userAddressItemList = null)
     {
         $this->userAddressItemList = $userAddressItemList;
     }
 
-    /**
-     * @param UserDataItem $userAddressItem
-     */
     public function addUserAddressItem(UserDataItem $userAddressItem)
     {
         $this->userAddressItemList[] = $userAddressItem;
     }
 
-    /**
-     * @return array
-     */
     public function export() : array
     {
         $userAddressExport = array_reduce($this->getUserAddressItemList(), function ($last, UserDataItem $userAddressItem) {
@@ -47,7 +39,7 @@ class UserAddress implements ExportableInterface
     }
 
     /**
-     * @return UserAddress[]|null
+     * @return UserDataItem[]|null
      */
     public function getUserAddressItemList() : ?array
     {
@@ -55,7 +47,7 @@ class UserAddress implements ExportableInterface
     }
 
     /**
-     * @param UserAddress[] $userAddressItemList
+     * @param UserDataItem[] $userAddressItemList
      */
     public function setUserAddressItemList(array $userAddressItemList)
     {
