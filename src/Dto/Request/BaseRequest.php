@@ -182,9 +182,10 @@ class BaseRequest extends AbstractRequest
         $exportBaseRequest = array_filter([
             'client_id' => $this->getClientId(),
             'app_instance_id' => $this->getAppInstanceId(),
-            'non_personalized_ads' => $this->isNonPersonalizedAds(),
             'events' => $this->getEvents()->export(),
         ]);
+
+        $exportBaseRequest['non_personalized_ads'] = $this->isNonPersonalizedAds();
 
         if ($this->getUserId() !== null) {
             $exportBaseRequest['user_id'] = $this->getUserId();

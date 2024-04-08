@@ -204,6 +204,8 @@ class BaseRequestTest extends BaseTestCase
         $setUserProperties = new UserProperties();
         $exportBaseRequest->setUserProperties($setUserProperties);
 
+        $exportBaseRequest->setNonPersonalizedAds(false);
+
         $consent = new ConsentProperty();
         $consent->setAdUserData(ConsentCode::GRANTED);
         $consent->setAdPersonalization(ConsentCode::DENIED);
@@ -214,6 +216,7 @@ class BaseRequestTest extends BaseTestCase
             'events' => $setEventCollection->export(),
             'user_id' => $setUserId,
             'timestamp_micros' => $setTimestampMicros,
+            'non_personalized_ads' => false,
             'user_properties' => $setUserProperties->export(),
             'consent' => $consent->export()
         ], $exportBaseRequest->export());
