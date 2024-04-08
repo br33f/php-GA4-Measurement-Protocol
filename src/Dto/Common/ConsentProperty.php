@@ -14,22 +14,25 @@ class ConsentProperty implements ExportableInterface
 {
     /**
      * Sets consent for sending user data from the request's events and user properties to Google for advertising purposes.
-     * @var ConsentCode
+     * Must be either {@see ConsentCode::GRANTED} or {@see ConsentCode::DENIED}
+     * @var string
      */
     protected $ad_user_data;
 
     /**
      * Sets consent for personalized advertising for the user.
-     * @var ConsentCode
+     * Must be either {@see ConsentCode::GRANTED} or {@see ConsentCode::DENIED}
+     * @var string
      */
     protected $ad_personalization;
 
     /**
      * ConsentProperty constructor
-     * @param ConsentCode|null $ad_user_data
-     * @param ConsentCode|null $ad_personalization
+     * Each parameters must be either {@see ConsentCode::GRANTED} or {@see ConsentCode::DENIED}
+     * @param string|null $ad_user_data 
+     * @param string|null $ad_personalization
      */
-    public function __construct(?ConsentCode $ad_user_data = null, ?ConsentCode $ad_personalization = null)
+    public function __construct(?string $ad_user_data = null, ?string $ad_personalization = null)
     {
         $this->ad_user_data = $ad_user_data;
         $this->ad_personalization = $ad_personalization;
@@ -51,33 +54,35 @@ class ConsentProperty implements ExportableInterface
     }
 
     /**
-     * @return ConsentCode|null
+     * @return string|null
      */
-    public function getAdUserData() : ?ConsentCode
+    public function getAdUserData() : ?string
     {
         return $this->ad_user_data;
     }
 
     /**
-     * @param ConsentCode|null $ad_user_data
+     * Must be either {@see ConsentCode::GRANTED} or {@see ConsentCode::DENIED}
+     * @param string|null $ad_user_data
      */
-    public function setAdUserData(?ConsentCode $ad_user_data) : void
+    public function setAdUserData(?string $ad_user_data) : void
     {
         $this->ad_user_data = $ad_user_data;
     }
 
     /**
-     * @return ConsentCode|null
+     * @return string|null
      */
-    public function getAdPersonalization() : ?ConsentCode
+    public function getAdPersonalization() : ?string
     {
         return $this->ad_personalization;
     }
 
     /**
-     * @param ConsentCode|null $ad_personalization
+     * Must be either {@see ConsentCode::GRANTED} or {@see ConsentCode::DENIED}
+     * @param string|null $ad_personalization
      */
-    public function setAdPersonalization(?ConsentCode $ad_personalization) : void
+    public function setAdPersonalization(?string $ad_personalization) : void
     {
         $this->ad_personalization = $ad_personalization;
     }
