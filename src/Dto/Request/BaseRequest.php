@@ -10,6 +10,7 @@ namespace Br33f\Ga4\MeasurementProtocol\Dto\Request;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\EventCollection;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserProperties;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserProperty;
+use Br33f\Ga4\MeasurementProtocol\Dto\Common\ConsentProperty;
 use Br33f\Ga4\MeasurementProtocol\Dto\Event\AbstractEvent;
 use Br33f\Ga4\MeasurementProtocol\Enum\ErrorCode;
 use Br33f\Ga4\MeasurementProtocol\Exception\ValidationException;
@@ -57,6 +58,13 @@ class BaseRequest extends AbstractRequest
      */
     protected $nonPersonalizedAds = false;
 
+    /**
+     * Sets the consent settings for the request.
+     * Replaces non_personalized_ads
+     * Not required
+     * @var ConsentProperty
+     */
+    protected $consent = null;
 
     /**
      * Collection of event items. Maximum 25 events.
@@ -121,6 +129,24 @@ class BaseRequest extends AbstractRequest
     }
 
     /**
+     * @return ConsentProperty|null
+     */
+    public function getConsent() : ?ConsentProperty
+    {
+        return $this->consent;
+    }
+
+    /**
+     * @param ConsentProperty|null $consent
+     * @return BaseRequest
+     */
+    public function setConsent(?ConsentProperty $consent) : self
+    {
+        $this->consent = $consent;
+        return $this;
+    }
+
+    /**
      * @param AbstractEvent $event
      * @return BaseRequest
      */
@@ -170,6 +196,10 @@ class BaseRequest extends AbstractRequest
 
         if ($this->getUserProperties() !== null) {
             $exportBaseRequest['user_properties'] = $this->getUserProperties()->export();
+        }
+
+        if ($this->getConsent() !== null) {
+            $exportBaseRequest['consent'] = $this->getConsent()->export();
         }
 
         return $exportBaseRequest;
