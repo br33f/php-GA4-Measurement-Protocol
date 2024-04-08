@@ -181,6 +181,7 @@ class BaseRequestTest extends BaseTestCase
 
         $this->assertEquals([
             'client_id' => $setClientId,
+            'non_personalized_ads' => false,
             'events' => $setEventCollection->export(),
         ], $exportBaseRequest->export());
     }
@@ -204,7 +205,7 @@ class BaseRequestTest extends BaseTestCase
         $setUserProperties = new UserProperties();
         $exportBaseRequest->setUserProperties($setUserProperties);
 
-        $exportBaseRequest->setNonPersonalizedAds(false);
+        $exportBaseRequest->setNonPersonalizedAds(true);
 
         $consent = new ConsentProperty();
         $consent->setAdUserData(ConsentCode::GRANTED);
@@ -216,7 +217,7 @@ class BaseRequestTest extends BaseTestCase
             'events' => $setEventCollection->export(),
             'user_id' => $setUserId,
             'timestamp_micros' => $setTimestampMicros,
-            'non_personalized_ads' => false,
+            'non_personalized_ads' => true,
             'user_properties' => $setUserProperties->export(),
             'consent' => $consent->export()
         ], $exportBaseRequest->export());
