@@ -53,10 +53,10 @@ class BaseRequest extends AbstractRequest
 
     /**
      * If set true - indicates that events should not be use for personalized ads.
-     * Default false
-     * @var bool
+     * Not required
+     * @var ?bool
      */
-    protected $nonPersonalizedAds = false;
+    protected $nonPersonalizedAds = null;
 
     /**
      * Sets the consent settings for the request.
@@ -185,7 +185,9 @@ class BaseRequest extends AbstractRequest
             'events' => $this->getEvents()->export(),
         ]);
 
-        $exportBaseRequest['non_personalized_ads'] = $this->isNonPersonalizedAds();
+        if ($this->getNonPersonalizedAds() !== null) {
+            $exportBaseRequest['non_personalized_ads'] = $this->isNonPersonalizedAds();
+        }
 
         if ($this->getUserId() !== null) {
             $exportBaseRequest['user_id'] = $this->getUserId();
@@ -246,6 +248,19 @@ class BaseRequest extends AbstractRequest
      * @return bool
      */
     public function isNonPersonalizedAds(): bool
+    {
+        $nonPersonalizedAds = $this->getNonPersonalizedAds();
+        if (!isset($nonPersonalizedAds)) {
+            return false;
+        }
+
+        return $this->nonPersonalizedAds;
+    }
+
+    /**
+     * @return ?bool
+     */
+    public function getNonPersonalizedAds() : ?bool
     {
         return $this->nonPersonalizedAds;
     }
