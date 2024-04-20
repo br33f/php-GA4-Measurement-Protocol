@@ -7,9 +7,10 @@
 
 namespace Br33f\Ga4\MeasurementProtocol\Dto\Response;
 
+use GuzzleHttp\Psr7\Stream;
 use Psr\Http\Message\ResponseInterface;
 
-class BaseResponse extends AbstractResponse
+class StreamResponse extends AbstractResponse
 {
     /**
      * @var int|null
@@ -17,27 +18,9 @@ class BaseResponse extends AbstractResponse
     protected $statusCode;
 
     /**
-     * @var string
+     * @var Stream
      */
     protected $body;
-
-    /**
-     * @return int|null
-     */
-    public function getStatusCode(): ?int
-    {
-        return $this->statusCode;
-    }
-
-    /**
-     * @param int|null $statusCode
-     * @return BaseResponse
-     */
-    public function setStatusCode(?int $statusCode)
-    {
-        $this->statusCode = $statusCode;
-        return $this;
-    }
 
     /**
      * Get parsed body
@@ -49,18 +32,18 @@ class BaseResponse extends AbstractResponse
     }
 
     /**
-     * @return string
+     * @return Stream
      */
-    public function getBody(): string
+    public function getBody(): Stream
     {
         return $this->body;
     }
 
     /**
-     * @param string $body
-     * @return BaseResponse
+     * @param Stream $body
+     * @return StreamResponse
      */
-    public function setBody(string $body)
+    public function setBody(Stream $body)
     {
         $this->body = $body;
         return $this;
@@ -72,6 +55,24 @@ class BaseResponse extends AbstractResponse
     public function hydrate($blueprint)
     {
         $this->setStatusCode($blueprint->getStatusCode());
-        $this->setBody($blueprint->getBody()->getContents());
+        $this->setBody($blueprint->getBody());
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getStatusCode(): ?int
+    {
+        return $this->statusCode;
+    }
+
+    /**
+     * @param int|null $statusCode
+     * @return StreamResponse
+     */
+    public function setStatusCode(?int $statusCode)
+    {
+        $this->statusCode = $statusCode;
+        return $this;
     }
 }

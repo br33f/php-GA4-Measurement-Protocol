@@ -8,8 +8,10 @@
 namespace Br33f\Ga4\MeasurementProtocol;
 
 use Br33f\Ga4\MeasurementProtocol\Dto\Request\AbstractRequest;
+use Br33f\Ga4\MeasurementProtocol\Dto\Response\AbstractResponse;
 use Br33f\Ga4\MeasurementProtocol\Dto\Response\BaseResponse;
 use Br33f\Ga4\MeasurementProtocol\Dto\Response\DebugResponse;
+use Br33f\Ga4\MeasurementProtocol\Dto\Response\StreamResponse;
 use Br33f\Ga4\MeasurementProtocol\Exception\MisconfigurationException;
 
 class Service
@@ -65,7 +67,7 @@ class Service
      * @var string
      */
     protected $firebaseId = null;
-    
+
     /**
      * The custom ip address of the visitor
      * @var string
@@ -98,27 +100,59 @@ class Service
      * @return BaseResponse
      * @throws Exception\ValidationException
      * @throws Exception\HydrationException
+     * @api
      */
     public function send(AbstractRequest $request, ?bool $debug = false)
+    {
+        return $this->doSend($request, $debug);
+    }
+
+    /**
+     * @param AbstractRequest $request
+     * @return DebugResponse
+     * @throws Exception\ValidationException
+     * @throws Exception\HydrationException
+     * @api
+     */
+    public function sendDebug(AbstractRequest $request)
+    {
+        return $this->doSend($request, true);
+    }
+
+    /**
+     * @param AbstractRequest $request
+     * @return DebugResponse
+     * @throws Exception\ValidationException
+     * @throws Exception\HydrationException
+     * @api
+     */
+    public function sendStream(AbstractRequest $request)
+    {
+        return $this->doSend($request, false, true);
+    }
+
+    /**
+     * @param AbstractRequest $request
+     * @param bool|null $debug
+     * @param bool|null $stream
+     * @return AbstractResponse
+     * @throws Exception\ValidationException
+     * @throws Exception\HydrationException
+     */
+    protected function doSend(AbstractRequest $request, ?bool $debug = false, ?bool $stream = false)
     {
         $request->validate($this->measurementId ? 'web' : 'firebase');
         $response = $this->getHttpClient()->post($this->getEndpoint($debug), $request->export(), $this->getOptions());
 
-        return !$debug
-            ? new BaseResponse($response)
-            : new DebugResponse($response);
+        if ($debug) {
+            return new DebugResponse($response);
+        } else if ($stream) {
+            return new StreamResponse($response);
+        } else {
+            return new BaseResponse($response);
+        }
     }
-    
-    /**
-     * @param AbstractRequest $request
-     * @return BaseResponse
-     * @throws Exception\ValidationException
-     * @throws Exception\HydrationException
-     */
-    public function sendDebug(AbstractRequest $request)
-    {
-        return $this->send($request, true);
-    }
+
     /**
      * Returns Http Client if set or creates a new instance and returns it
      * @return HttpClient
@@ -237,7 +271,7 @@ class Service
             'measurement_id' => $this->getMeasurementId(),
             'firebase_app_id' => $this->getFirebaseId(),
         ];
-        
+
         if ($parameters['firebase_app_id'] && $parameters['measurement_id']) {
             throw new MisconfigurationException("Cannot specify both 'measurement_id' and 'firebase_app_id'.");
         }
@@ -343,5 +377,5 @@ class Service
         $this->options = $options;
         return $this;
     }
-    
+
 }
