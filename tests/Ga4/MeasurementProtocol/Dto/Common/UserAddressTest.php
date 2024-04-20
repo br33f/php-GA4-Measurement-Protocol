@@ -5,7 +5,7 @@
  * Time: 12:09
  */
 
-namespace Tests\Dto\Common;
+namespace Tests\Ga4\MeasurementProtocol\Dto\Common;
 
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserAddress;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserDataItem;
