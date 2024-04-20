@@ -209,12 +209,16 @@ class BaseRequestTest extends BaseTestCase
         $setUserProperties = new UserProperties();
         $exportBaseRequest->setUserProperties($setUserProperties);
 
+        $constructedUserData = new UserData();
+        $exportBaseRequest->setUserData($constructedUserData);
+
         $this->assertEquals([
             'client_id' => $setClientId,
             'events' => $setEventCollection->export(),
             'user_id' => $setUserId,
             'timestamp_micros' => $setTimestampMicros,
-            'user_properties' => $setUserProperties->export()
+            'user_properties' => $setUserProperties->export(),
+            'user_data' => $constructedUserData->export(),
         ], $exportBaseRequest->export());
     }
 

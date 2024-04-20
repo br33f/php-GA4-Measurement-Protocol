@@ -95,6 +95,24 @@ class UserDataTest extends BaseTestCase
         ], $this->userData->export());
     }
 
+    public function testAddUserAddress()
+    {
+        $userAddressDatum1 = new UserDataItem($this->faker->word, $this->faker->word);
+        $userAddressDatum2 = new UserDataItem($this->faker->word, $this->faker->word);
+        $userAddress = new UserAddress([$userAddressDatum1, $userAddressDatum2]);
+
+        $this->userData->addUserAddress($userAddress);
+
+        $this->assertEquals([
+            'address' => [
+                [
+                    $userAddressDatum1->getName() => $userAddressDatum1->getValue(),
+                    $userAddressDatum2->getName() => $userAddressDatum2->getValue(),
+                ],
+            ]
+        ], $this->userData->export());
+    }
+
     protected function setUp(): void
     {
         $this->userData = new UserData();
