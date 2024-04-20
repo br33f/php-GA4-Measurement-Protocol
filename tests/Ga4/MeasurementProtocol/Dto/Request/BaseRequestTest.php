@@ -8,6 +8,8 @@
 namespace Tests\Ga4\MeasurementProtocol\Dto\Request;
 
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\EventCollection;
+use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserData;
+use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserDataItem;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserProperties;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserProperty;
 use Br33f\Ga4\MeasurementProtocol\Dto\Event\BaseEvent;
@@ -88,6 +90,23 @@ class BaseRequestTest extends BaseTestCase
 
         $this->assertEquals(1, count($this->baseRequest->getUserProperties()->getUserPropertiesList()));
         $this->assertEquals($addUserProperty, $this->baseRequest->getUserProperties()->getUserPropertiesList()[0]);
+    }
+
+    public function testUserData()
+    {
+        $setUserData = new UserData();
+        $this->baseRequest->setUserData($setUserData);
+
+        $this->assertEquals($setUserData, $this->baseRequest->getUserData());
+    }
+
+    public function testAddUserDataItem()
+    {
+        $addUserDataItem = new UserDataItem($this->faker->word, $this->faker->word);
+        $this->baseRequest->addUserDataItem($addUserDataItem);
+
+        $this->assertEquals(1, count($this->baseRequest->getUserData()->getUserDataItemList()));
+        $this->assertEquals($addUserDataItem, $this->baseRequest->getUserData()->getUserDataItemList()[0]);
     }
 
     public function testEvents()
@@ -190,12 +209,16 @@ class BaseRequestTest extends BaseTestCase
         $setUserProperties = new UserProperties();
         $exportBaseRequest->setUserProperties($setUserProperties);
 
+        $constructedUserData = new UserData();
+        $exportBaseRequest->setUserData($constructedUserData);
+
         $this->assertEquals([
             'client_id' => $setClientId,
             'events' => $setEventCollection->export(),
             'user_id' => $setUserId,
             'timestamp_micros' => $setTimestampMicros,
-            'user_properties' => $setUserProperties->export()
+            'user_properties' => $setUserProperties->export(),
+            'user_data' => $constructedUserData->export(),
         ], $exportBaseRequest->export());
     }
 

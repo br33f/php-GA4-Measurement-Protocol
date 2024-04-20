@@ -8,6 +8,8 @@
 namespace Br33f\Ga4\MeasurementProtocol\Dto\Request;
 
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\EventCollection;
+use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserData;
+use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserDataItem;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserProperties;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserProperty;
 use Br33f\Ga4\MeasurementProtocol\Dto\Event\AbstractEvent;
@@ -49,6 +51,13 @@ class BaseRequest extends AbstractRequest
      * @var UserProperties
      */
     protected $userProperties = null;
+
+    /**
+     * The user data for the measurement.
+     * Not required
+     * @var UserData
+     */
+    protected $userData = null;
 
     /**
      * If set true - indicates that events should not be use for personalized ads.
@@ -120,6 +129,39 @@ class BaseRequest extends AbstractRequest
         return $this;
     }
 
+
+    /**
+     * @param UserData $userProperty
+     * @return BaseRequest
+     */
+    public function addUserDataItem(UserDataItem $userDataItem)
+    {
+        if ($this->getUserData() === null) {
+            $this->setUserData(new UserData());
+        }
+
+        $this->getUserData()->addUserDataItem($userDataItem);
+        return $this;
+    }
+
+    /**
+     * @return UserProperties|null
+     */
+    public function getUserData(): ?UserData
+    {
+        return $this->userData;
+    }
+
+    /**
+     * @param UserData|null $userData
+     * @return BaseRequest
+     */
+    public function setUserData(?UserData $userData)
+    {
+        $this->userData = $userData;
+        return $this;
+    }
+
     /**
      * @param AbstractEvent $event
      * @return BaseRequest
@@ -170,6 +212,10 @@ class BaseRequest extends AbstractRequest
 
         if ($this->getUserProperties() !== null) {
             $exportBaseRequest['user_properties'] = $this->getUserProperties()->export();
+        }
+
+        if ($this->getUserData() !== null) {
+            $exportBaseRequest['user_data'] = $this->getUserData()->export();
         }
 
         return $exportBaseRequest;
