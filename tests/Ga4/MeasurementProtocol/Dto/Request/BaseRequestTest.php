@@ -68,6 +68,8 @@ class BaseRequestTest extends BaseTestCase
 
     public function testNonPersonalizedAds()
     {
+        $this->assertEquals(null, $this->baseRequest->isNonPersonalizedAds());
+
         $this->baseRequest->setNonPersonalizedAds(true);
         $this->assertEquals(true, $this->baseRequest->isNonPersonalizedAds());
 
@@ -181,7 +183,6 @@ class BaseRequestTest extends BaseTestCase
 
         $this->assertEquals([
             'client_id' => $setClientId,
-            'non_personalized_ads' => false,
             'events' => $setEventCollection->export(),
         ], $exportBaseRequest->export());
     }
