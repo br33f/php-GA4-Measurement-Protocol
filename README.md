@@ -190,6 +190,40 @@ $baseRequest = new BaseRequest();
 $baseRequest->setAppInstanceId('APP_INSTANCE_ID'); // instead of setClientId(...)
 ```
 
+### Consent mode v2
+
+This library supports consent mode v2 : [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=firebase#payload_consent)
+
+```php
+use Br33f\Ga4\MeasurementProtocol\Dto\Request\BaseRequest;
+use Br33f\Ga4\MeasurementProtocol\Dto\Common\ConsentProperty;
+use Br33f\Ga4\MeasurementProtocol\Enum\ConsentCode;
+
+// Create consent property with :
+// - ad_user_data = GRANTED
+// - ad_personalization = DENIED
+$consent = new ConsentProperty();
+$consent->setAdUserData(ConsentCode::GRANTED);
+$consent->setAdPersonalization(ConsentCode::DENIED);
+
+// Create base request
+$baseRequest = new BaseRequest();
+$baseRequest->setConsent($consent);
+```
+
+This mode replaces now obsolete / deprecated `non_personalized_ads` :
+
+```php
+$baseRequest = new BaseRequest();
+$baseRequest->setNonPersonalizedAds(true);
+
+// Is replaced by :
+
+$consent = new ConsentProperty();
+$consent->setAdPersonalization(ConsentCode::GRANTED);
+$baseRequest->setConsent($consent);
+```
+
 
 ## Debug event data and requests
 Debuging event data is possible by sending them to debug endpoint (Measurement Protocol Validation Server), since default endpoint for Google Analytics 4 Measurement Protocol does not return any HTTP error codes or messages. In order to validate event one should use `sendDebug($request)` method instead of `send($request)`.

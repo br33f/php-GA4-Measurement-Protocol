@@ -7,6 +7,7 @@
 
 namespace Tests\Ga4\MeasurementProtocol\Dto\Request;
 
+use Br33f\Ga4\MeasurementProtocol\Dto\Common\ConsentProperty;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\EventCollection;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserData;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserDataItem;
@@ -15,6 +16,7 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserProperty;
 use Br33f\Ga4\MeasurementProtocol\Dto\Event\BaseEvent;
 use Br33f\Ga4\MeasurementProtocol\Dto\Parameter\BaseParameter;
 use Br33f\Ga4\MeasurementProtocol\Dto\Request\BaseRequest;
+use Br33f\Ga4\MeasurementProtocol\Enum\ConsentCode;
 use Br33f\Ga4\MeasurementProtocol\Enum\ErrorCode;
 use Tests\Common\BaseTestCase;
 
@@ -68,6 +70,8 @@ class BaseRequestTest extends BaseTestCase
 
     public function testNonPersonalizedAds()
     {
+        $this->assertEquals(null, $this->baseRequest->isNonPersonalizedAds());
+
         $this->baseRequest->setNonPersonalizedAds(true);
         $this->assertEquals(true, $this->baseRequest->isNonPersonalizedAds());
 
@@ -90,6 +94,18 @@ class BaseRequestTest extends BaseTestCase
 
         $this->assertEquals(1, count($this->baseRequest->getUserProperties()->getUserPropertiesList()));
         $this->assertEquals($addUserProperty, $this->baseRequest->getUserProperties()->getUserPropertiesList()[0]);
+    }
+
+    public function testConsent()
+    {
+        $consent = new ConsentProperty();
+        $consent->setAdUserData(ConsentCode::GRANTED);
+        $consent->setAdPersonalization(ConsentCode::DENIED);
+        $this->baseRequest->setConsent($consent);
+
+        $this->assertNotNull($this->baseRequest->getConsent());
+        $this->assertEquals(ConsentCode::GRANTED, $this->baseRequest->getConsent()->getAdUserData());
+        $this->assertEquals(ConsentCode::DENIED, $this->baseRequest->getConsent()->getAdPersonalization());
     }
 
     public function testUserData()
@@ -209,6 +225,13 @@ class BaseRequestTest extends BaseTestCase
         $setUserProperties = new UserProperties();
         $exportBaseRequest->setUserProperties($setUserProperties);
 
+        $exportBaseRequest->setNonPersonalizedAds(true);
+
+        $consent = new ConsentProperty();
+        $consent->setAdUserData(ConsentCode::GRANTED);
+        $consent->setAdPersonalization(ConsentCode::DENIED);
+        $exportBaseRequest->setConsent($consent);
+
         $constructedUserData = new UserData();
         $exportBaseRequest->setUserData($constructedUserData);
 
@@ -217,8 +240,10 @@ class BaseRequestTest extends BaseTestCase
             'events' => $setEventCollection->export(),
             'user_id' => $setUserId,
             'timestamp_micros' => $setTimestampMicros,
+            'non_personalized_ads' => true,
             'user_properties' => $setUserProperties->export(),
-            'user_data' => $constructedUserData->export(),
+            'consent' => $consent->export(),
+            'user_data' => $constructedUserData->export()
         ], $exportBaseRequest->export());
     }
 

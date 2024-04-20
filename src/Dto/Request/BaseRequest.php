@@ -12,6 +12,7 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserData;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserDataItem;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserProperties;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserProperty;
+use Br33f\Ga4\MeasurementProtocol\Dto\Common\ConsentProperty;
 use Br33f\Ga4\MeasurementProtocol\Dto\Event\AbstractEvent;
 use Br33f\Ga4\MeasurementProtocol\Enum\ErrorCode;
 use Br33f\Ga4\MeasurementProtocol\Exception\ValidationException;
@@ -61,11 +62,18 @@ class BaseRequest extends AbstractRequest
 
     /**
      * If set true - indicates that events should not be use for personalized ads.
-     * Default false
-     * @var bool
+     * Not required
+     * @var ?bool
      */
-    protected $nonPersonalizedAds = false;
+    protected $nonPersonalizedAds = null;
 
+    /**
+     * Sets the consent settings for the request.
+     * Replaces non_personalized_ads
+     * Not required
+     * @var ConsentProperty
+     */
+    protected $consent = null;
 
     /**
      * Collection of event items. Maximum 25 events.
@@ -126,6 +134,24 @@ class BaseRequest extends AbstractRequest
     public function setUserProperties(?UserProperties $userProperties)
     {
         $this->userProperties = $userProperties;
+        return $this;
+    }
+
+    /**
+     * @return ConsentProperty|null
+     */
+    public function getConsent() : ?ConsentProperty
+    {
+        return $this->consent;
+    }
+
+    /**
+     * @param ConsentProperty|null $consent
+     * @return BaseRequest
+     */
+    public function setConsent(?ConsentProperty $consent) : self
+    {
+        $this->consent = $consent;
         return $this;
     }
 
@@ -198,9 +224,12 @@ class BaseRequest extends AbstractRequest
         $exportBaseRequest = array_filter([
             'client_id' => $this->getClientId(),
             'app_instance_id' => $this->getAppInstanceId(),
-            'non_personalized_ads' => $this->isNonPersonalizedAds(),
             'events' => $this->getEvents()->export(),
         ]);
+
+        if ($this->getNonPersonalizedAds() !== null) {
+            $exportBaseRequest['non_personalized_ads'] = $this->isNonPersonalizedAds();
+        }
 
         if ($this->getUserId() !== null) {
             $exportBaseRequest['user_id'] = $this->getUserId();
@@ -216,6 +245,10 @@ class BaseRequest extends AbstractRequest
 
         if ($this->getUserData() !== null) {
             $exportBaseRequest['user_data'] = $this->getUserData()->export();
+        }
+
+        if ($this->getConsent() !== null) {
+            $exportBaseRequest['consent'] = $this->getConsent()->export();
         }
 
         return $exportBaseRequest;
@@ -261,6 +294,19 @@ class BaseRequest extends AbstractRequest
      * @return bool
      */
     public function isNonPersonalizedAds(): bool
+    {
+        $nonPersonalizedAds = $this->getNonPersonalizedAds();
+        if (!isset($nonPersonalizedAds)) {
+            return false;
+        }
+
+        return $this->nonPersonalizedAds;
+    }
+
+    /**
+     * @return ?bool
+     */
+    public function getNonPersonalizedAds() : ?bool
     {
         return $this->nonPersonalizedAds;
     }
