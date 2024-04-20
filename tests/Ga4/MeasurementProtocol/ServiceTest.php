@@ -11,6 +11,7 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Event\BaseEvent;
 use Br33f\Ga4\MeasurementProtocol\Dto\Request\BaseRequest;
 use Br33f\Ga4\MeasurementProtocol\Dto\Response\AbstractResponse;
 use Br33f\Ga4\MeasurementProtocol\Dto\Response\DebugResponse;
+use Br33f\Ga4\MeasurementProtocol\Dto\Response\StreamResponse;
 use Br33f\Ga4\MeasurementProtocol\Exception\MisconfigurationException;
 use Br33f\Ga4\MeasurementProtocol\HttpClient;
 use Br33f\Ga4\MeasurementProtocol\Service;
@@ -254,6 +255,30 @@ class ServiceTest extends BaseTestCase
 
         $this->expectException(MisconfigurationException::class);
         $testService->getQueryParameters();
+    }
+
+    public function testSendStream()
+    {
+        $mock = new MockHandler([
+            new Response(200)
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $mockClient = new Client(['handler' => $handlerStack]);
+
+        $setApiSecret = $this->faker->word;
+        $setMeasurementId = $this->faker->bothify('**-########');
+        $sendService = new Service($setApiSecret, $setMeasurementId);
+        $sendService->getHttpClient()->setClient($mockClient);
+
+        $setClientId = $this->faker->asciify('********************.********************');
+        $sentRequest = new BaseRequest($setClientId);
+        $event = new BaseEvent($this->faker->word);
+        $sentRequest->addEvent($event);
+
+        $response = $sendService->sendStream($sentRequest);
+        $this->assertTrue($response instanceof StreamResponse);
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     protected function setUp(): void

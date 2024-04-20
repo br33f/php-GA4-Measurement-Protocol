@@ -9,6 +9,8 @@ namespace Tests\Ga4\MeasurementProtocol\Dto\Request;
 
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\ConsentProperty;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\EventCollection;
+use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserData;
+use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserDataItem;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserProperties;
 use Br33f\Ga4\MeasurementProtocol\Dto\Common\UserProperty;
 use Br33f\Ga4\MeasurementProtocol\Dto\Event\BaseEvent;
@@ -104,6 +106,23 @@ class BaseRequestTest extends BaseTestCase
         $this->assertNotNull($this->baseRequest->getConsent());
         $this->assertEquals(ConsentCode::GRANTED, $this->baseRequest->getConsent()->getAdUserData());
         $this->assertEquals(ConsentCode::DENIED, $this->baseRequest->getConsent()->getAdPersonalization());
+    }
+
+    public function testUserData()
+    {
+        $setUserData = new UserData();
+        $this->baseRequest->setUserData($setUserData);
+
+        $this->assertEquals($setUserData, $this->baseRequest->getUserData());
+    }
+
+    public function testAddUserDataItem()
+    {
+        $addUserDataItem = new UserDataItem($this->faker->word, $this->faker->word);
+        $this->baseRequest->addUserDataItem($addUserDataItem);
+
+        $this->assertEquals(1, count($this->baseRequest->getUserData()->getUserDataItemList()));
+        $this->assertEquals($addUserDataItem, $this->baseRequest->getUserData()->getUserDataItemList()[0]);
     }
 
     public function testEvents()
@@ -213,6 +232,9 @@ class BaseRequestTest extends BaseTestCase
         $consent->setAdPersonalization(ConsentCode::DENIED);
         $exportBaseRequest->setConsent($consent);
 
+        $constructedUserData = new UserData();
+        $exportBaseRequest->setUserData($constructedUserData);
+
         $this->assertEquals([
             'client_id' => $setClientId,
             'events' => $setEventCollection->export(),
@@ -220,7 +242,8 @@ class BaseRequestTest extends BaseTestCase
             'timestamp_micros' => $setTimestampMicros,
             'non_personalized_ads' => true,
             'user_properties' => $setUserProperties->export(),
-            'consent' => $consent->export()
+            'consent' => $consent->export(),
+            'user_data' => $constructedUserData->export()
         ], $exportBaseRequest->export());
     }
 
