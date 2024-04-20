@@ -3,7 +3,9 @@
 [![Latest Stable Version](https://poser.pugx.org/br33f/php-ga4-mp/v/stable.png)](https://packagist.org/packages/br33f/php-ga4-mp)
 [![Total Downloads](https://poser.pugx.org/br33f/php-ga4-mp/downloads.png)](https://packagist.org/packages/br33f/php-ga4-mp)
 ## Overview
-This is a PHP Library facilitating the use of Google Analytics 4 (GA4) Measurement Protocol. Measurement Protocol allows developers to send events directly from server-side PHP to Google Analytics. 
+
+This is a PHP Library facilitating the use of Google Analytics 4 (GA4) Measurement Protocol. Measurement Protocol allows
+developers to send events directly from server-side PHP to Google Analytics.
 
 Full documentation is available here:
 https://developers.google.com/analytics/devguides/collection/protocol/ga4
@@ -65,8 +67,8 @@ $viewedItem
     ->setItemName('ITEM_NAME')
     ->setPrice(25.55)
     ->setQuantity(2);
-    
-// Add this item to viewItemEventData   
+
+// Add this item to viewItemEventData
 $viewItemEventData->addItem($viewedItem);
 
 // Add event to base request (you can add up to 25 events to single request)
@@ -105,7 +107,7 @@ $purchasedItem1
     ->setItemName('FIRST_ITEM_NAME')
     ->setPrice(100.00)
     ->setQuantity(2);
-    
+
 // Add this item to purchaseEventData
 $purchaseEventData->addItem($purchasedItem1);
 
@@ -158,7 +160,7 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Event\BaseEvent;
 // ...
 
 // Create Base Event Data (for example: 'share' event - https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#share)
-$eventName = 'share'; 
+$eventName = 'share';
 $anyEventData = new BaseEvent($eventName);
 $anyEventData
     ->setMethod('Twitter')
@@ -227,13 +229,62 @@ $addToCartEventData->addItem(new ItemParameter([
 $baseRequest->addEvent($addToCartEventData);
 
 // Instead of sending data to production Measurement Protocol endpoint
-// $ga4Service->send($baseRequest); 
+// $ga4Service->send($baseRequest);
 // Send data to validation endpoint, which responds with status cude and validation messages.
 $debugResponse = $ga4Service->sendDebug($baseRequest);
 
 // Now debug response contains status code, and validation messages if request is invalid
-var_dump($debugResponse->getStatusCode()); 
+var_dump($debugResponse->getStatusCode());
 var_dump($debugResponse->getValidationMessages());
+
+```
+
+## Get response as stream
+
+It is possible to get response as stream. This is useful when you want to process response further and you don't want
+the stream to be consumed in BaseResponse.
+
+Method `sendStream($request)` returns `StreamResponse` object, which is hydrated with response data such
+as: `status_code` (just as usual) and `body` which is a stream resource.
+
+### Example:
+
+```php
+use Br33f\Ga4\MeasurementProtocol\Service;
+use Br33f\Ga4\MeasurementProtocol\Dto\Request\BaseRequest;
+use Br33f\Ga4\MeasurementProtocol\Dto\Event\AddToCartEvent;
+use Br33f\Ga4\MeasurementProtocol\Dto\Parameter\ItemParameter;
+
+// Create service instance
+$ga4Service = new Service('MEASUREMENT_PROTOCOL_API_SECRET');
+$ga4Service->setMeasurementId('MEASUREMENT_ID');
+
+// Create base request
+$baseRequest = new BaseRequest();
+$baseRequest->setClientId('CLIENT_ID');
+
+// Create Invalid Event Data
+$addToCartEventData = new AddToCartEvent();
+$addToCartEventData
+    ->setValue(99.99)
+    ->setCurrency('SOME_INVALID_CURRENCY_CODE'); // invalid currency code
+
+// addItem
+$addToCartEventData->addItem(new ItemParameter([
+    'item_id' => 'ITEM_ID',
+    'item_name' => 'ITEM_NAME',
+    'price' => 99.99,
+    'quantity' => 1
+]));
+
+// Add event to base request (you can add up to 25 events to single request)
+$baseRequest->addEvent($addToCartEventData);
+
+// Instead of $ga4Service->send($baseRequest);
+// That way we can get response as stream in StreamResponse class body property
+$streamResponse = $ga4Service->sendStream($baseRequest);
+
+var_dump($debugResponse->getBody());
 
 ```
 
