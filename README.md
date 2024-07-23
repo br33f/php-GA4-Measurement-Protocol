@@ -1,7 +1,7 @@
 # Google Analytics 4 Measurement Protocol PHP Library
 [![Coverage Status](https://coveralls.io/repos/github/br33f/php-GA4-Measurement-Protocol/badge.svg?branch=master)](https://coveralls.io/github/br33f/php-GA4-Measurement-Protocol?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/br33f/php-ga4-mp/v/stable.png)](https://packagist.org/packages/br33f/php-ga4-mp)
-[![Total Downloads](https://poser.pugx.org/br33f/php-ga4-mp/downloads.png)](https://packagist.org/packages/br33f/php-ga4-mp)
+[![Total Downloads](https://poser.pugx.org/br33f/php-ga4-mp/downloads)](https://packagist.org/packages/br33f/php-ga4-mp)
 ## Overview
 
 This is a PHP Library facilitating the use of Google Analytics 4 (GA4) Measurement Protocol. Measurement Protocol allows
