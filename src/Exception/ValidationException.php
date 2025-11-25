@@ -17,7 +17,7 @@ class ValidationException extends AnalyticsException
      */
     protected $fieldName = null;
 
-    public function __construct($message = "", $code = 0, $fieldName = null, Throwable $previous = null)
+    public function __construct($message = "", $code = 0, $fieldName = null, ?Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
 

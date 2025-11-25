@@ -21,7 +21,7 @@ class UserProperties implements ExportableInterface
      * UserProperties constructor.
      * @param UserProperty[] $userPropertiesList
      */
-    public function __construct(array $userPropertiesList = null)
+    public function __construct(?array $userPropertiesList = null)
     {
         $this->userPropertiesList = $userPropertiesList ?? [];
     }
