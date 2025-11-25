@@ -7,8 +7,8 @@
 
 namespace Br33f\Ga4\MeasurementProtocol\Dto\Response;
 
-use GuzzleHttp\Psr7\Stream;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 class StreamResponse extends AbstractResponse
 {
@@ -18,7 +18,7 @@ class StreamResponse extends AbstractResponse
     protected $statusCode;
 
     /**
-     * @var Stream
+     * @var StreamInterface
      */
     protected $body;
 
@@ -32,18 +32,18 @@ class StreamResponse extends AbstractResponse
     }
 
     /**
-     * @return Stream
+     * @return StreamInterface
      */
-    public function getBody(): Stream
+    public function getBody(): StreamInterface
     {
         return $this->body;
     }
 
     /**
-     * @param Stream $body
+     * @param StreamInterface $body
      * @return StreamResponse
      */
-    public function setBody(Stream $body)
+    public function setBody(StreamInterface $body)
     {
         $this->body = $body;
         return $this;
