@@ -16,7 +16,7 @@ class StreamResponseTest extends BaseTestCase
     /**
      * @var StreamResponse
      */
-    protected $baseResponse;
+    protected $streamResponse;
 
     public function testDefaultConstructor()
     {

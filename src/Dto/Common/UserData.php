@@ -27,7 +27,7 @@ class UserData implements ExportableInterface
      * @param UserDataItem[] $userDataItemList
      * @param UserAddress[]  $userAddressList
      */
-    public function __construct(array $userDataItemList = null, array $userAddressList = null)
+    public function __construct(?array $userDataItemList = null, ?array $userAddressList = null)
     {
         $this->userDataItemList = $userDataItemList ?? [];
         $this->userAddressList = $userAddressList;

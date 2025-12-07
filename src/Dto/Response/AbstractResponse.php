@@ -19,7 +19,7 @@ abstract class AbstractResponse implements HydratableInterface
      * @param ResponseInterface|null $blueprint
      * @throws HydrationException
      */
-    public function __construct(ResponseInterface $blueprint = null)
+    public function __construct(?ResponseInterface $blueprint = null)
     {
         if ($blueprint !== null) {
             $this->hydrate($blueprint);
