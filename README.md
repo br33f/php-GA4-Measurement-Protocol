@@ -12,7 +12,7 @@ Full documentation is available here:
 https://developers.google.com/analytics/devguides/collection/protocol/ga4
 
 ## Requirements
-- PHP >= 7.1
+- PHP >= 7.3
 - ext-json
 - guzzlehttp/guzzle: ^6.5.5 || ^7.0.0
 
