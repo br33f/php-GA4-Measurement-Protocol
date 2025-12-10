@@ -128,6 +128,20 @@ class ItemParameter extends AbstractParameter implements HydratableInterface
     protected $itemListName;
 
     /**
+     * The name of the list in which the item was presented to the user
+     * Not required
+     * @var string|null
+     */
+    protected $promotionId;
+
+    /**
+     * The name of the list in which the item was presented to the user
+     * Not required
+     * @var string|null
+     */
+    protected $promotionName;
+
+    /**
      * The item variant or unique code or description for additional item details/options.
      * Not required
      * @var string|null
@@ -171,62 +185,34 @@ class ItemParameter extends AbstractParameter implements HydratableInterface
      */
     public function hydrate($blueprint)
     {
-        if (array_key_exists('item_id', $blueprint)) {
-            $this->setItemId($blueprint['item_id']);
-        }
-        if (array_key_exists('item_name', $blueprint)) {
-            $this->setItemName($blueprint['item_name']);
-        }
-        if (array_key_exists('affiliation', $blueprint)) {
-            $this->setAffiliation($blueprint['affiliation']);
-        }
-        if (array_key_exists('coupon', $blueprint)) {
-            $this->setCoupon($blueprint['coupon']);
-        }
-        if (array_key_exists('currency', $blueprint)) {
-            $this->setCurrency($blueprint['currency']);
-        }
-        if (array_key_exists('discount', $blueprint)) {
-            $this->setDiscount($blueprint['discount']);
-        }
-        if (array_key_exists('index', $blueprint)) {
-            $this->setIndex($blueprint['index']);
-        }
-        if (array_key_exists('item_brand', $blueprint)) {
-            $this->setItemBrand($blueprint['item_brand']);
-        }
-        if (array_key_exists('item_category', $blueprint)) {
-            $this->setItemCategory($blueprint['item_category']);
-        }
-        if (array_key_exists('item_category2', $blueprint)) {
-            $this->setItemCategory2($blueprint['item_category2']);
-        }
-        if (array_key_exists('item_category3', $blueprint)) {
-            $this->setItemCategory3($blueprint['item_category3']);
-        }
-        if (array_key_exists('item_category4', $blueprint)) {
-            $this->setItemCategory4($blueprint['item_category4']);
-        }
-        if (array_key_exists('item_category5', $blueprint)) {
-            $this->setItemCategory5($blueprint['item_category5']);
-        }
-        if (array_key_exists('item_list_id', $blueprint)) {
-            $this->setItemListId($blueprint['item_list_id']);
-        }
-        if (array_key_exists('item_list_name', $blueprint)) {
-            $this->setItemListName($blueprint['item_list_name']);
-        }
-        if (array_key_exists('item_variant', $blueprint)) {
-            $this->setItemVariant($blueprint['item_variant']);
-        }
-        if (array_key_exists('location_id', $blueprint)) {
-            $this->setLocationId($blueprint['location_id']);
-        }
-        if (array_key_exists('price', $blueprint)) {
-            $this->setPrice($blueprint['price']);
-        }
-        if (array_key_exists('quantity', $blueprint)) {
-            $this->setQuantity($blueprint['quantity']);
+        $mapping = [
+            'item_id' => 'setItemId',
+            'item_name' => 'setItemName',
+            'affiliation' => 'setAffiliation',
+            'coupon' => 'setCoupon',
+            'currency' => 'setCurrency',
+            'discount' => 'setDiscount',
+            'index' => 'setIndex',
+            'item_brand' => 'setItemBrand',
+            'item_category' => 'setItemCategory',
+            'item_category2' => 'setItemCategory2',
+            'item_category3' => 'setItemCategory3',
+            'item_category4' => 'setItemCategory4',
+            'item_category5' => 'setItemCategory5',
+            'promotion_id' => 'setPromotionId',
+            'promotion_name' => 'setPromotionName',
+            'item_list_id' => 'setItemListId',
+            'item_list_name' => 'setItemListName',
+            'item_variant' => 'setItemVariant',
+            'location_id' => 'setLocationId',
+            'price' => 'setPrice',
+            'quantity' => 'setQuantity',
+        ];
+
+        foreach ($mapping as $key => $method) {
+            if (array_key_exists($key, $blueprint)) {
+                $this->$method($blueprint[$key]);
+            }
         }
     }
 
@@ -298,6 +284,8 @@ class ItemParameter extends AbstractParameter implements HydratableInterface
             'item_category3' => $this->getItemCategory3(),
             'item_category4' => $this->getItemCategory4(),
             'item_category5' => $this->getItemCategory5(),
+            'promotion_id' => $this->getPromotionId(),
+            'promotion_name' => $this->getPromotionName(),
             'item_list_id' => $this->getItemListId(),
             'item_list_name' => $this->getItemListName(),
             'item_variant' => $this->getItemVariant(),
@@ -539,6 +527,40 @@ class ItemParameter extends AbstractParameter implements HydratableInterface
     public function getItemListName(): ?string
     {
         return $this->itemListName;
+    }
+
+    /**
+     * @param string|null $promotionName
+     * @return ItemParameter
+     */
+    public function setPromotionName(?string $promotionName): ItemParameter
+    {
+        $this->promotionName = $promotionName;
+        return $this;
+    }
+    /**
+     * @return string|null
+     */
+    public function getPromotionName(): ?string
+    {
+        return $this->promotionName;
+    }
+
+    /**
+     * @param string|null $promotionId
+     * @return ItemParameter
+     */
+    public function setPromotionId(?string $promotionId): ItemParameter
+    {
+        $this->promotionId = $promotionId;
+        return $this;
+    }
+    /**
+     * @return string|null
+     */
+    public function getPromotionId(): ?string
+    {
+        return $this->promotionId;
     }
 
     /**

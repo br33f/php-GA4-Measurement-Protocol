@@ -129,23 +129,27 @@ $ga4Service->send($baseRequest);
 ```
 
 At the moment, the library contains the defined structures of the following events:
+
 | Event name | Structure | Documentation |
 | ---------- | --------- | --------------|
-| add_payment_info | AddPaymentInfoEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#add_payment_info)
-| add_shipping_info | AddShippingInfoEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#add_shipping_info)
-| add_to_cart | AddToCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#add_to_cart)
-| add_to_wishlist | AddToWishlistEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?hl=fr&client_type=gtag#add_to_wishlist)
-| begin_checkout | BeginCheckoutEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#begin_checkout)
-| login | LoginEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#login)
-| purchase | PurchaseEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#purchase)
-| refund | RefundEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#refund)
-| remove_from_cart | RemoveFromCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#remove_from_cart)
-| search | SearchEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#search)
-| select_item | SelectItemEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#select_item)
-| sign_up | SignUpEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#sign_up)
-| view_cart | ViewCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#view_cart)
-| view_item | ViewItemEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#view_item)
-| view_search_results | ViewSearchResultsEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#view_search_results)
+| add_payment_info | AddPaymentInfoEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#add_payment_info) |
+| add_shipping_info | AddShippingInfoEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#add_shipping_info) |
+| add_to_cart | AddToCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#add_to_cart) |
+| add_to_wishlist | AddToWishlistEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#add_to_wishlist) |
+| begin_checkout | BeginCheckoutEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#begin_checkout) |
+| login | LoginEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#login) |
+| purchase | PurchaseEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#purchase) |
+| refund | RefundEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#refund) |
+| remove_from_cart | RemoveFromCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#remove_from_cart) |
+| search | SearchEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#search) |
+| select_item | SelectItemEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#select_item) |
+| sign_up | SignUpEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#sign_up) |
+| view_cart | ViewCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#view_cart) |
+| view_item | ViewItemEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#view_item) |
+| view_item_list | ViewItemListEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#view_item_list) |
+| view_search_results | ViewSearchResultsEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#view_search_results) |
+| select_promotion | SelectPromotionEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#select_promotion) |
+| view_promotion | ViewPromotionEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events#view_promotion) |
 
 These events are sent analogously to the examples presented above.
 
@@ -160,7 +164,7 @@ use Br33f\Ga4\MeasurementProtocol\Dto\Event\BaseEvent;
 // Create Service and request same as above
 // ...
 
-// Create Base Event Data (for example: 'share' event - https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events#share)
+// Create Base Event Data (for example: 'share' event - https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#share)
 $eventName = 'share';
 $anyEventData = new BaseEvent($eventName);
 $anyEventData
