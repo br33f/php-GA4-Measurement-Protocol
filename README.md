@@ -131,25 +131,24 @@ $ga4Service->send($baseRequest);
 At the moment, the library contains the defined structures of the following events:
 | Event name | Structure | Documentation |
 | ---------- | --------- | --------------|
-| add_payment_info | AddPaymentInfoEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#add_payment_info)
-| add_shipping_info | AddShippingInfoEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#add_shipping_info)
-| add_to_cart | AddToCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#add_to_cart)
-| add_to_wishlist | AddToWishlistEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#add_to_wishlist)
-| begin_checkout | BeginCheckoutEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#begin_checkout)
-| login | LoginEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#login)
-| purchase | PurchaseEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#purchase)
-| refund | RefundEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#refund)
-| remove_from_cart | RemoveFromCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#remove_from_cart)
-| search | SearchEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#search)
-| select_item | SelectItemEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#select_item)
-| sign_up | SignUpEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#sign_up)
-| view_cart | ViewCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#view_cart)
-| view_item | ViewItemEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#view_item)
-| view_item_list | ViewItemListEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#view_item_list)
-| view_search_results | ViewSearchResultsEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#view_search_results)
-| select_promotion | SelectPromotionEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#select_promotion)
-| view_promotion | ViewPromotionEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#view_promotion)
-
+| add_payment_info | AddPaymentInfoEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#add_payment_info) |
+| add_shipping_info | AddShippingInfoEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#add_shipping_info) |
+| add_to_cart | AddToCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#add_to_cart) |
+| add_to_wishlist | AddToWishlistEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#add_to_wishlist) |
+| begin_checkout | BeginCheckoutEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#begin_checkout) |
+| login | LoginEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#login) |
+| purchase | PurchaseEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#purchase) |
+| refund | RefundEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#refund) |
+| remove_from_cart | RemoveFromCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#remove_from_cart) |
+| search | SearchEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#search) |
+| select_item | SelectItemEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#select_item) |
+| sign_up | SignUpEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#sign_up) |
+| view_cart | ViewCartEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#view_cart) |
+| view_item | ViewItemEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#view_item) |
+| view_item_list | ViewItemListEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#view_item_list) |
+| view_search_results | ViewSearchResultsEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#view_search_results) |
+| select_promotion | SelectPromotionEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#select_promotion) |
+| view_promotion | ViewPromotionEvent | [see documentation](https://developers.google.com/analytics/devguides/collection/ga4/reference/events?sjid=17491993992317121377-NA&client_type=gtag#view_promotion) |
 These events are sent analogously to the examples presented above.
 
 ### Other events
